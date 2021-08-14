@@ -38,23 +38,35 @@ class get_pokemons extends Command
      * @return int
      */
     public function handle()
-    {
-        $url = 'https://pokeapi.co/api/v2/pokemon/?limit=151';
+    {   $limit="151";
+        $url = 'https://pokeapi.co/api/v2/pokemon/?limit='.$limit;
         $httpClient = new Client();
         $request = $httpClient->get($url);
         $response = json_decode($request->getBody()->getContents());
         $pokemonAPIURLS = collect($response->results)->map(function ($result){
             return $result->url;
         });
+
+        $alreadyExistsCount = 0;
+        $addedCount = 0;
         for ($i=0; $i < count($pokemonAPIURLS); $i++) {
 
             $pokemonRequest = $httpClient->get($pokemonAPIURLS[$i]);
             $pokemonResponse = json_decode($pokemonRequest->getBody());
-            $doesExist = Pokemon::query()->where('id',$pokemonResponse->id);
-            $alreadyExistsCount = 0;
-            $addedCount = 0;
-            if ($doesExist) {
+            $alreadyExistsPokemon = Pokemon::query()->where('id',$pokemonResponse->id)->first();
+
+            if ($alreadyExistsPokemon) {
                 $alreadyExistsCount++;
+                $alreadyExistsPokemon->id =$pokemonResponse->id;
+                $alreadyExistsPokemon->name =$pokemonResponse->name;
+                $alreadyExistsPokemon->moves =$pokemonResponse->moves;
+                $alreadyExistsPokemon->types =$pokemonResponse->types;
+                $alreadyExistsPokemon->stats =$pokemonResponse->stats;
+                $alreadyExistsPokemon->sprites =$pokemonResponse->sprites;
+                $alreadyExistsPokemon->base_experience =$pokemonResponse->base_experience;
+                $alreadyExistsPokemon->height =$pokemonResponse->height;
+                $alreadyExistsPokemon->weight =$pokemonResponse->weight;
+                $alreadyExistsPokemon->save();
             }else{
                 $pokemon = new Pokemon;
                 $pokemon->id =$pokemonResponse->id;
@@ -71,8 +83,7 @@ class get_pokemons extends Command
             }
 
         }
-        // TODO: Check why it's promting {"Already Exists:":1," Added:":0}
-        echo collect(["Already Exists:"=>$alreadyExistsCount, " Added:" =>$addedCount]);
+        echo collect([ "Added:" =>$addedCount," Updated:" => $alreadyExistsCount]);
 
         return 0;
     }
