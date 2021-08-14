@@ -18,4 +18,14 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get("/test","PokemonController@index");
+Route::group(['prefix' => 'pokemon'], function () {
+    Route::get("/","PokemonController@index");
+    Route::get("/{id}","PokemonController@show");
+});
+
+
+Route::group(['prefix' => 'item'], function () {
+    Route::get("/","ItemController@index");
+    Route::get("/{id}","ItemController@show");
+});
+
