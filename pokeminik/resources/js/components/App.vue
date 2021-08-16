@@ -1,23 +1,20 @@
 <template>
-
-  <v-app>
-    <div class="fill-height">
-      <v-btn block>
-        Block Button
-      </v-btn>
+    <div>
+        <navigator/>
     </div>
-  </v-app>
-
 </template>
 
-<style>
-
-</style>
-
 <script>
+import Navigator from "./Navigator.vue";
 export default {
+    components:{
+    Navigator
+    },
+    setup() {
+        // expose to template
+        return {
 
-}
+        };
+    },
+};
 </script>
-
-
