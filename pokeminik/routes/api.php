@@ -21,6 +21,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::group(['prefix' => 'pokemon'], function () {
     Route::get("/","PokemonController@index");
     Route::get("/{id}","PokemonController@show");
+    Route::get("/search/{nameOrId}","PokemonController@search");
 });
 
 

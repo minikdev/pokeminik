@@ -23,5 +23,10 @@ class PokemonController extends Controller
         return $pokemon;
     }
 
+    public function search(){
+        $nameOrId = request("nameOrId");
+        $pokemons = Pokemon::query()->where("name","like","%".$nameOrId."%")->orWhere("id",$nameOrId)->get();
+        return $pokemons;
+    }
 
 }

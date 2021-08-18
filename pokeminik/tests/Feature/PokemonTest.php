@@ -38,4 +38,10 @@ class PokemonTest extends TestCase
         $this->assertEquals($response->original->id,$id);
     }
 
+    public function test_search_pokemon(){
+        $nameOrId = "bulbasa";
+        $response = $this->get('/api/pokemon/search/'.$nameOrId);
+        $countResult = count($response->original);
+        $this->assertEquals(1,$countResult);
+    }
 }

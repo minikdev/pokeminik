@@ -1,11 +1,14 @@
 <template>
-    <div>
+    <v-app>
         <navigator/>
-    </div>
+
+        <router-view></router-view>
+    </v-app>
 </template>
 
 <script>
 import Navigator from "./Navigator.vue";
+
 export default {
     components:{
     Navigator
@@ -20,7 +23,5 @@ export default {
 </script>
 
 <style >
-/* .form-control{
 
-} */
 </style>
