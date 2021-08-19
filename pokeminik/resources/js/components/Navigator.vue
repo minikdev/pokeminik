@@ -1,102 +1,94 @@
 <template>
     <div>
-        <v-card class="overflow-hidden">
-            <v-app-bar
-                color="deep-orange-darken-1"
-                scroll-target="#scrolling-techniques"
-            >
-                <v-app-bar-nav-icon
-                    @click="drawer = !drawer"
-                ></v-app-bar-nav-icon>
-
-                <v-app-bar-title>Pokeminik</v-app-bar-title>
-
-                <v-spacer></v-spacer>
-            </v-app-bar>
-            <v-navigation-drawer temporary v-model="drawer">
-                <v-container>
-                    <!-- <input type="text"> -->
-                    <v-row>
-                        <v-col>
-                            <v-btn block rounded="lg" disabled>Login</v-btn>
-                        </v-col>
-                    </v-row>
-                    <v-row>
-                        <v-col>
-                            <v-btn
-                                block
-                                rounded="lg"
+        <v-app-bar
+            color="deep-orange-darken-1"
+            scroll-target="#scrolling-techniques"
+            app="true"
+        >
+            <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
+            <v-app-bar-title>Pokeminik</v-app-bar-title>
+        </v-app-bar>
+        <v-navigation-drawer v-model="drawer" app="true">
+            <v-container>
+                <v-row>
+                    <v-col>
+                        <v-btn block rounded="lg" disabled>Login</v-btn>
+                    </v-col>
+                </v-row>
+                <v-row>
+                    <v-col>
+                        <v-btn
+                            block
+                            rounded="lg"
+                            color="deep-orange-darken-1"
+                            @click="togglePokedex"
+                            >Pokedex</v-btn
+                        >
+                    </v-col>
+                </v-row>
+                <v-divider></v-divider>
+                <v-row>
+                    <v-col>
+                        <v-banner rounded="pill">
+                            <input
+                                type="text"
+                                @input="searchPokemon()"
+                                v-model="searchTerm"
+                            />
+                            <v-icon>mdi-magnify</v-icon>
+                        </v-banner>
+                    </v-col>
+                </v-row>
+                <v-row>
+                    <v-col>
+                        <div class="loader-container">
+                            <v-progress-circular
+                                indeterminate
+                                v-if="isLoading"
+                            ></v-progress-circular>
+                        </div>
+                        <v-list dense rounded="lg"   v-if="!isLoading">
+                            <v-card
+                                v-for="pokemon in pokemons"
+                                :key="pokemon.id"
+                                class="item"
                                 color="deep-orange-darken-1"
-                                @click="togglePokedex"
-                                >Pokedex</v-btn
+                                elevation="7"
                             >
-                        </v-col>
-                    </v-row>
-                    <v-divider></v-divider>
-                    <v-row>
-                        <v-col>
-                            <v-banner rounded="pill">
-                                <input
-                                    type="text"
-                                    @input="searchPokemon()"
-                                    v-model="searchTerm"
-                                />
-                                <v-icon>mdi-magnify</v-icon>
-                            </v-banner>
-                        </v-col>
-                    </v-row>
-                    <v-row>
-                        <v-col>
-                            <div class="loader-container">
-                                <v-progress-circular
-                                    indeterminate
-                                    v-if="isLoading"
-                                ></v-progress-circular>
-                            </div>
-                            <v-list dense rounded="lg">
-                                <v-card
-                                    v-for="pokemon in pokemons"
-                                    :key="pokemon.id"
-                                    class="item"
-                                    color="deep-orange-darken-1"
-                                    elevation="7"
+                                <router-link
+                                    :to="{
+                                        name: 'PokemonDetail',
+                                        params: { id: pokemon.id ?pokemon.id:0 },
+                                    }"
+                                    class="router-link"
                                 >
-                                    <router-link
-                                        :to="{
-                                            name: 'PokemonDetail',
-                                            params: { id: pokemon.id },
-                                        }"
-                                        class="router-link"
-                                    >
-                                        <v-list-item>
-                                            <v-list-item-avatar>
-                                                <v-img
-                                                    lazy-src
-                                                    :src="
-                                                        pokemon.sprites
-                                                            .front_default
-                                                    "
-                                                ></v-img>
-                                            </v-list-item-avatar>
-
-                                            <v-list-item-title
-                                                v-html="
-                                                    '#' +
-                                                    pokemon.id +
-                                                    ' ' +
-                                                    pokemon.name
+                                    <v-list-item>
+                                        <v-list-item-avatar>
+                                            <v-img
+                                                lazy-src
+                                                :src="
+                                                    pokemon.sprites
+                                                        .front_default
                                                 "
-                                            ></v-list-item-title>
-                                        </v-list-item>
-                                    </router-link>
-                                </v-card>
-                            </v-list>
-                        </v-col>
-                    </v-row>
-                </v-container>
-            </v-navigation-drawer>
-        </v-card>
-        <router-view></router-view>
+                                            ></v-img>
+                                        </v-list-item-avatar>
+
+                                        <v-list-item-title
+                                            v-html="
+                                                '#' +
+                                                pokemon.id +
+                                                ' ' +
+                                                pokemon.name
+                                            "
+                                        ></v-list-item-title>
+                                    </v-list-item>
+                                </router-link>
+                            </v-card>
+                        </v-list>
+                    </v-col>
+                </v-row>
+            </v-container>
+        </v-navigation-drawer>
     </div>
 </template>
 
@@ -106,7 +98,7 @@ import axios from "axios";
 import _ from "lodash";
 export default {
     setup() {
-        const drawer = ref(false);
+        const drawer = ref(true);
         const pokemons = ref([]);
         const toggle = ref(false);
         const isActive = ref(false);
