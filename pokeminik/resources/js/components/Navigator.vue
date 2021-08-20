@@ -49,27 +49,19 @@
                         </div>
                         <v-list dense rounded="lg"   v-if="!isLoading">
                             <v-card
-                                v-for="pokemon in pokemons"
+
+                                v-for="pokemon in pokemons || []"
                                 :key="pokemon.id"
                                 class="item"
                                 color="deep-orange-darken-1"
                                 elevation="7"
+                                @click="movePokemonDetail(pokemon.id)"
                             >
-                                <router-link
-                                    :to="{
-                                        name: 'PokemonDetail',
-                                        params: { id: pokemon.id ?pokemon.id:0 },
-                                    }"
-                                    class="router-link"
-                                >
                                     <v-list-item>
                                         <v-list-item-avatar>
                                             <v-img
-                                                lazy-src
-                                                :src="
-                                                    pokemon.sprites
-                                                        .front_default
-                                                "
+                                                :src="pokemon?.sprites?.front_default"
+                                                alt="m"
                                             ></v-img>
                                         </v-list-item-avatar>
 
@@ -82,7 +74,7 @@
                                             "
                                         ></v-list-item-title>
                                     </v-list-item>
-                                </router-link>
+
                             </v-card>
                         </v-list>
                     </v-col>
@@ -93,17 +85,19 @@
 </template>
 
 <script>
-import { ref } from "vue";
+import {  ref } from "vue";
 import axios from "axios";
 import _ from "lodash";
+import { useRouter } from 'vue-router';
 export default {
-    setup() {
+    setup(props) {
         const drawer = ref(true);
         const pokemons = ref([]);
         const toggle = ref(false);
         const isActive = ref(false);
         const isLoading = ref(false);
         const searchTerm = ref("");
+        const router = useRouter();
         const searchPokemon = _.debounce(() => {
             isLoading.value = true;
             axios
@@ -135,6 +129,10 @@ export default {
             }
         };
 
+        const movePokemonDetail = (pokemonId)=>{
+            router.push({ name: 'PokemonDetail', params: { id: pokemonId } })
+        }
+
         return {
             togglePokedex,
             pokemons,
@@ -144,6 +142,7 @@ export default {
             isLoading,
             searchPokemon,
             searchTerm,
+            movePokemonDetail
         };
     },
 };
