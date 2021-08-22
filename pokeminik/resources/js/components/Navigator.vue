@@ -47,9 +47,8 @@
                                 v-if="isLoading"
                             ></v-progress-circular>
                         </div>
-                        <v-list dense rounded="lg"   v-if="!isLoading">
+                        <v-list dense rounded="lg" v-if="!isLoading">
                             <v-card
-
                                 v-for="pokemon in pokemons || []"
                                 :key="pokemon.id"
                                 class="item"
@@ -57,24 +56,24 @@
                                 elevation="7"
                                 @click="movePokemonDetail(pokemon.id)"
                             >
-                                    <v-list-item>
-                                        <v-list-item-avatar>
-                                            <v-img
-                                                :src="pokemon?.sprites?.front_default"
-                                                alt="m"
-                                            ></v-img>
-                                        </v-list-item-avatar>
-
-                                        <v-list-item-title
-                                            v-html="
-                                                '#' +
-                                                pokemon.id +
-                                                ' ' +
-                                                pokemon.name
+                                <v-list-item>
+                                    <v-list-item-avatar>
+                                        <v-img
+                                            :src="
+                                                pokemon?.sprites?.front_default
                                             "
-                                        ></v-list-item-title>
-                                    </v-list-item>
-
+                                            alt="m"
+                                        ></v-img>
+                                    </v-list-item-avatar>
+                                    <v-list-item-title
+                                        v-html="
+                                            '#' +
+                                            pokemon.id +
+                                            ' ' +
+                                            pokemon.name
+                                        "
+                                    ></v-list-item-title>
+                                </v-list-item>
                             </v-card>
                         </v-list>
                     </v-col>
@@ -85,10 +84,10 @@
 </template>
 
 <script>
-import {  ref } from "vue";
+import { ref } from "vue";
 import axios from "axios";
 import _ from "lodash";
-import { useRouter } from 'vue-router';
+import { useRouter } from "vue-router";
 export default {
     setup(props) {
         const drawer = ref(true);
@@ -101,7 +100,7 @@ export default {
         const searchPokemon = _.debounce(() => {
             isLoading.value = true;
             axios
-                .get(`api/pokemon/search/${searchTerm.value}`)
+                .get(`/api/pokemon/search/${searchTerm.value}`)
                 .then((result) => {
                     pokemons.value = result.data;
                     isLoading.value = false;
@@ -115,9 +114,11 @@ export default {
             toggle.value = !toggle.value;
             if (toggle.value) {
                 isLoading.value = !isLoading.value;
+
                 axios
-                    .get("api/pokemon?limit=151&skip=0")
+                    .get("/api/pokemon?limit=151&skip=0")
                     .then((result) => {
+
                         pokemons.value = result.data;
                         isLoading.value = !isLoading.value;
                     })
@@ -129,9 +130,9 @@ export default {
             }
         };
 
-        const movePokemonDetail = (pokemonId)=>{
-            router.push({ name: 'PokemonDetail', params: { id: pokemonId } })
-        }
+        const movePokemonDetail = (pokemonId) => {
+            router.push({ name: "PokemonDetail", params: { id: pokemonId } });
+        };
 
         return {
             togglePokedex,
@@ -142,7 +143,7 @@ export default {
             isLoading,
             searchPokemon,
             searchTerm,
-            movePokemonDetail
+            movePokemonDetail,
         };
     },
 };
