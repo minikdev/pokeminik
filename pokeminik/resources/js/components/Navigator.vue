@@ -5,7 +5,7 @@
             scroll-target="#scrolling-techniques"
             app="true"
         >
-            <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
+            <v-app-bar-nav-icon @click="toggleSideBar"></v-app-bar-nav-icon>
             <v-app-bar-title>Pokeminik</v-app-bar-title>
         </v-app-bar>
         <v-navigation-drawer v-model="drawer" app="true">
@@ -21,7 +21,7 @@
                             block
                             rounded="lg"
                             color="deep-orange-darken-1"
-                            @click="togglePokedex"
+                            @click="getPokemons"
                             >Pokedex</v-btn
                         >
                     </v-col>
@@ -40,7 +40,7 @@
                     </v-col>
                 </v-row>
                 <v-row>
-                    <v-col>
+                    <v-col >
                         <div class="loader-container">
                             <v-progress-circular
                                 indeterminate
@@ -84,50 +84,26 @@
 </template>
 
 <script>
-import { ref } from "vue";
-import axios from "axios";
-import _ from "lodash";
+import { computed, ref } from "vue";
 import { useRouter } from "vue-router";
+import { useStore } from "vuex";
 export default {
     setup(props) {
         const drawer = ref(true);
-        const pokemons = ref([]);
-        const toggle = ref(false);
-        const isActive = ref(false);
-        const isLoading = ref(false);
-        const searchTerm = ref("");
+
         const router = useRouter();
-        const searchPokemon = _.debounce(() => {
-            isLoading.value = true;
-            axios
-                .get(`/api/pokemon/search/${searchTerm.value}`)
-                .then((result) => {
-                    pokemons.value = result.data;
-                    isLoading.value = false;
-                })
-                .catch((error) => {
-                    throw error;
-                }, 1000);
-        });
 
-        const togglePokedex = () => {
-            toggle.value = !toggle.value;
-            if (toggle.value) {
-                isLoading.value = !isLoading.value;
+        const store = useStore();
+        const pokemons = computed(() => store.state.pokemon.pokemons);
+        const getPokemons = () => store.dispatch("pokemon/getPokemons");
+        const isLoading = computed(() => store.state.pokemon.isLoading);
+        const searchPokemon = () =>
+            store.dispatch("pokemon/searchPokemon", searchTerm.value);
 
-                axios
-                    .get("/api/pokemon?limit=151&skip=0")
-                    .then((result) => {
+        const searchTerm = ref("");
 
-                        pokemons.value = result.data;
-                        isLoading.value = !isLoading.value;
-                    })
-                    .catch((error) => {
-                        throw error;
-                    });
-            } else {
-                pokemons.value = [];
-            }
+        const toggleSideBar = () => {
+            drawer.value = !drawer.value;
         };
 
         const movePokemonDetail = (pokemonId) => {
@@ -135,15 +111,14 @@ export default {
         };
 
         return {
-            togglePokedex,
             pokemons,
             drawer,
-            toggle,
-            isActive,
+            toggleSideBar,
             isLoading,
             searchPokemon,
             searchTerm,
             movePokemonDetail,
+            getPokemons,
         };
     },
 };

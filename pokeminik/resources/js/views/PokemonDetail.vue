@@ -42,11 +42,14 @@
 
 <script>
 import { ref } from "@vue/reactivity";
-import { onMounted, watch } from "vue";
+import { onMounted, watch, computed } from "vue";
 import { useRoute } from "vue-router";
 import axios from "axios";
+import { useStore } from 'vuex'
 export default {
-    setup(props) {
+    setup() {
+        const store = useStore();
+
         const route = useRoute();
         const id = ref(route.params.id);
         const pokemonData = ref({});
@@ -83,6 +86,7 @@ export default {
             pokemonData,
             getPokemonData,
             isLoading,
+
         };
     },
 };
