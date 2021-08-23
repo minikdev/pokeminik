@@ -1,8 +1,10 @@
 import axios from "axios";
-import _ from "lodash"
+import _ from "lodash";
 const state = {
     pokemons: [],
     isLoading: false,
+    pokemonDetailLoading:false,
+    pokemon: {},
 };
 const getters = {};
 
@@ -36,6 +38,16 @@ const actions = {
                 throw error;
             }, 1000);
     }),
+    getPokemon({ commit },id) {
+        let pokemon;
+        commit("SET_POKEMON_DETAIL_LOADING", true);
+        axios.get(`/api/pokemon/${id}`).then((result) => {
+            pokemon = result.data;
+            console.log(pokemon);
+            commit("SET_POKEMON", pokemon);
+            commit("SET_POKEMON_DETAIL_LOADING", false);
+        });
+    },
 };
 
 const mutations = {
@@ -44,6 +56,12 @@ const mutations = {
     },
     SET_LOADING(state, isLoading) {
         state.isLoading = isLoading;
+    },
+    SET_POKEMON_DETAIL_LOADING(state, isLoading) {
+        state.pokemonDetailLoading = isLoading;
+    },
+    SET_POKEMON(state, pokemon) {
+        state.pokemon = pokemon;
     },
 };
 
