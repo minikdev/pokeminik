@@ -115,5 +115,7 @@ class AuthController extends Controller
             'user' => auth()->user()
         ]);
     }
-
+    public function index(){
+        return view("welcome");
+    }
 }

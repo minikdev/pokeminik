@@ -12,7 +12,7 @@
             <v-container>
                 <v-row>
                     <v-col>
-                        <v-btn block rounded="lg" disabled>Login</v-btn>
+                        <v-btn block rounded="lg" @click="moveToLogin">Login</v-btn>
                     </v-col>
                 </v-row>
                 <v-row>
@@ -109,7 +109,9 @@ export default {
         const movePokemonDetail = (pokemonId) => {
             router.push({ name: "PokemonDetail", params: { id: pokemonId } });
         };
-
+        const moveToLogin = ()=>{
+            router.push({ name: "Login"});
+        }
         return {
             pokemons,
             drawer,
@@ -119,6 +121,7 @@ export default {
             searchTerm,
             movePokemonDetail,
             getPokemons,
+            moveToLogin
         };
     },
 };

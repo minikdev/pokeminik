@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div >
         <v-progress-circular
             indeterminate
             v-if="isLoading"
@@ -8,7 +8,7 @@
         <v-card v-if="!isLoading">
             <v-container>
                 <v-row>
-                    <v-col md="4">
+                    <v-col md="4" style="cursor:pointer">
                         <v-icon @click="movePreviousPokemonDetail"
                             >mdi-arrow-left-thick</v-icon
                         >
@@ -19,9 +19,10 @@
                             {{ "#" + pokemon.id + " " + pokemon.name }}
                         </h2>
                     </v-col>
-                    <v-col md="4">
+                    <v-col md="4" >
                         <div class="right-arrow-aligner">
                             <v-icon @click="moveNextPokemonDetail"
+
                                 >mdi-arrow-right-thick</v-icon
                             >
                             <label class="arrow-description">Next</label>
@@ -167,6 +168,7 @@ label {
     justify-content: flex-end;
     display: flex;
     align-items: center;
+    cursor: pointer;
 }
 .stat-container {
     display: flex;
