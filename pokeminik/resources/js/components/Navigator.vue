@@ -10,9 +10,23 @@
         </v-app-bar>
         <v-navigation-drawer v-model="drawer" app="true">
             <v-container>
-                <v-row>
+                <v-row v-if="!isAuthenticated">
                     <v-col>
-                        <v-btn block rounded="lg" @click="moveToLogin">Login</v-btn>
+                        <v-btn block rounded="lg" @click="moveToLogin"
+                            >Login</v-btn
+                        >
+                    </v-col>
+                </v-row>
+                <v-row v-if="isAuthenticated">
+                    <v-col>
+                        <v-btn block rounded="lg" >{{
+                            trainer.username
+                        }}</v-btn>
+                    </v-col>
+                </v-row>
+                <v-row v-if="isAuthenticated">
+                    <v-col>
+                        <v-btn block rounded="lg" @click="logout">Logout</v-btn>
                     </v-col>
                 </v-row>
                 <v-row>
@@ -40,7 +54,7 @@
                     </v-col>
                 </v-row>
                 <v-row>
-                    <v-col >
+                    <v-col>
                         <div class="loader-container">
                             <v-progress-circular
                                 indeterminate
@@ -87,20 +101,34 @@
 import { computed, ref } from "vue";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
+import { onMounted } from "@vue/runtime-core";
 export default {
     setup(props) {
         const drawer = ref(true);
-
         const router = useRouter();
 
         const store = useStore();
+
         const pokemons = computed(() => store.state.pokemon.pokemons);
         const getPokemons = () => store.dispatch("pokemon/getPokemons");
         const isLoading = computed(() => store.state.pokemon.isLoading);
+
         const searchPokemon = () =>
-            store.dispatch("pokemon/searchPokemon", searchTerm.value);
+        store.dispatch("pokemon/searchPokemon", searchTerm.value);
+
+        const trainer = computed(() => store.state.authentication.trainer);
+
+        const isAuthenticated = computed(
+            () => store.state.authentication.isAuthenticated
+        );
+        const logout = () =>
+        store.dispatch("authentication/logout");
 
         const searchTerm = ref("");
+        const trainerId = ref("");
+
+        const fetchTrainer = () =>
+        store.dispatch("authentication/fetchTrainer", trainerId.value);
 
         const toggleSideBar = () => {
             drawer.value = !drawer.value;
@@ -109,9 +137,16 @@ export default {
         const movePokemonDetail = (pokemonId) => {
             router.push({ name: "PokemonDetail", params: { id: pokemonId } });
         };
-        const moveToLogin = ()=>{
-            router.push({ name: "Login"});
-        }
+        const moveToLogin = () => {
+            router.push({ name: "Login" });
+        };
+        onMounted(() => {
+            let id = window.localStorage.getItem("trainer_id");
+            if (id) {
+                trainerId.value = id;
+                fetchTrainer();
+            }
+        });
         return {
             pokemons,
             drawer,
@@ -121,7 +156,10 @@ export default {
             searchTerm,
             movePokemonDetail,
             getPokemons,
-            moveToLogin
+            moveToLogin,
+            trainer,
+            isAuthenticated,
+            logout
         };
     },
 };

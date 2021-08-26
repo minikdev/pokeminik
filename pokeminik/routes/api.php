@@ -25,6 +25,10 @@ Route::group(['prefix' => 'item'], function () {
     Route::get("/","ItemController@index");
     Route::get("/{id}","ItemController@show");
 });
+Route::group(['prefix' => 'trainer'], function () {
+
+    Route::get("/{id}","TrainerController@show");
+});
 
 Route::group([
     'middleware' => 'api',

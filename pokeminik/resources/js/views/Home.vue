@@ -1,10 +1,11 @@
 <template>
     <div>
         <navigator></navigator>
-        <v-main>
-            <v-container fluid>
+        <v-main  >
+            <v-container fluid >
             <router-view></router-view>
             </v-container>
+
         </v-main>
     </div>
 </template>
@@ -20,8 +21,4 @@ export default {
 </script>
 
 <style>
-/* .content{
-    margin-left: 15rem;
-    margin-top: 15rem;
-} */
 </style>

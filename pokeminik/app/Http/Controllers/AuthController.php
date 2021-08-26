@@ -64,9 +64,11 @@ class AuthController extends Controller
                     ['password' => bcrypt($request->password)]
                 ));
 
+        $token = auth()->attempt($validator->validated());
         return response()->json([
             'message' => 'User successfully registered',
-            'user' => $trainer
+            'user' => $trainer,
+            'token'=>$this->createNewToken($token)
         ], 201);
     }
 

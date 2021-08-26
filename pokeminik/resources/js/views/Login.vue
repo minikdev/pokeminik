@@ -77,13 +77,11 @@ export default {
             store.dispatch("authentication/login", {
                 username: username.value,
                 password: password.value,
-            }).then(response=>{
-                console.log(userInfo.value.id);
-                router.push({ name: "PokemonDetail", params: { id: 1 } })
-            });
+            }).then(()=>{
+                router.push({name:"PokemonDetail",params: { id: 1 }})
+            })
 
         const isLoading = computed(() => store.state.authentication.isLoading);
-        const userInfo = computed(() => store.state.authentication.userInfo);
         watch([username, password], ([username, password]) => {
             if (username.length > 0 && password.length > 0) {
                 isValid.value = true;
@@ -91,6 +89,7 @@ export default {
                 isValid.value = false;
             }
         });
+
         return {
             moveToRegister,
             username,
@@ -116,5 +115,9 @@ p {
     font-weight: bolder;
     margin-top: 1rem;
     cursor: pointer;
+}
+.progress-center {
+    top: 50%;
+    left: 50%;
 }
 </style>

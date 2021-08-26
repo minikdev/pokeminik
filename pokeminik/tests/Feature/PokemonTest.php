@@ -27,11 +27,7 @@ class PokemonTest extends TestCase
         $response = $this->get('/api/pokemon?limit='.$limit.'&offset'.$offset);
         $this->assertEquals(count($response->original) ,$limit);
     }
-    public function test_show_pokemon(){
-        $id = "1";
-        $response = $this->get('/api/pokemon/'.$id);
-        $response->assertStatus(200);
-    }
+
     public function test_show_correct_pokemon(){
         $id = "1";
         $response = $this->get('/api/pokemon/'.$id);
