@@ -19,9 +19,7 @@
                 </v-row>
                 <v-row v-if="isAuthenticated">
                     <v-col>
-                        <v-btn block rounded="lg" >{{
-                            trainer.username
-                        }}</v-btn>
+                        <v-btn block rounded="lg">{{ trainer.username }}</v-btn>
                     </v-col>
                 </v-row>
                 <v-row v-if="isAuthenticated">
@@ -42,13 +40,12 @@
                 </v-row>
                 <v-divider></v-divider>
                 <v-row>
-                    <v-col>
+                    <v-col md=12>
                         <v-banner rounded="pill">
                             <input
                                 type="text"
                                 @input="searchPokemon()"
-                                v-model="searchTerm"
-                            />
+                                v-model="searchTerm"/>
                             <v-icon>mdi-magnify</v-icon>
                         </v-banner>
                     </v-col>
@@ -114,21 +111,20 @@ export default {
         const isLoading = computed(() => store.state.pokemon.isLoading);
 
         const searchPokemon = () =>
-        store.dispatch("pokemon/searchPokemon", searchTerm.value);
+            store.dispatch("pokemon/searchPokemon", searchTerm.value);
 
         const trainer = computed(() => store.state.authentication.trainer);
 
         const isAuthenticated = computed(
             () => store.state.authentication.isAuthenticated
         );
-        const logout = () =>
-        store.dispatch("authentication/logout");
+        const logout = () => store.dispatch("authentication/logout");
 
         const searchTerm = ref("");
         const trainerId = ref("");
 
         const fetchTrainer = () =>
-        store.dispatch("authentication/fetchTrainer", trainerId.value);
+            store.dispatch("authentication/fetchTrainer", trainerId.value);
 
         const toggleSideBar = () => {
             drawer.value = !drawer.value;
@@ -159,7 +155,7 @@ export default {
             moveToLogin,
             trainer,
             isAuthenticated,
-            logout
+            logout,
         };
     },
 };
