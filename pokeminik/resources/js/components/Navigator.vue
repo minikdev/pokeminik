@@ -19,7 +19,7 @@
                 </v-row>
                 <v-row v-if="isAuthenticated">
                     <v-col>
-                        <v-btn block rounded="lg">{{ trainer.username }}</v-btn>
+                        <v-btn block rounded="lg" @click="moveTrainerDetail">{{ trainer.username }}</v-btn>
                     </v-col>
                 </v-row>
                 <v-row v-if="isAuthenticated">
@@ -97,7 +97,7 @@
         background-color="deep-orange-darken-1"
          app="true"
         ><v-row >
-            <v-col md="12"  class="footer">Created by @minikdev</v-col></v-row></v-bottom-navigation>
+            <v-col md="12"  class="footer">Created by <a href="https://github.com/minikdev" target="blank"> @minikdev</a> </v-col></v-row></v-bottom-navigation>
     </div>
 </template>
 
@@ -140,6 +140,9 @@ export default {
         const movePokemonDetail = (pokemonId) => {
             router.push({ name: "PokemonDetail", params: { id: pokemonId } });
         };
+        const moveTrainerDetail = ()=>{
+            router.push({ name: "TrainerDetail", params: { id: trainerId.value} });
+        }
         const moveToLogin = () => {
             router.push({ name: "Login" });
         };
@@ -163,6 +166,7 @@ export default {
             trainer,
             isAuthenticated,
             logout,
+            moveTrainerDetail
         };
     },
 };

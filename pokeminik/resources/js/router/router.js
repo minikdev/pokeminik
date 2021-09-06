@@ -1,6 +1,7 @@
 import {createWebHistory,createRouter} from "vue-router"
 import Home from "../views/Home"
 import PokemonDetail from "../views/PokemonDetail"
+import TrainerDetail from "../views/TrainerDetail"
 import Login from "../views/Login"
 import Register from "../views/Register"
 const routes = [
@@ -24,6 +25,12 @@ const routes = [
                 path:"/register",
                 name:"Register",
                 component:Register
+            },
+            {
+                path:"/trainer/:id",
+                name:"TrainerDetail",
+                component:TrainerDetail,
+                props:true
             }
         ]
     },
