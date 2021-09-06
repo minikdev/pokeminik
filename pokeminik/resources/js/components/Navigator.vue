@@ -40,12 +40,13 @@
                 </v-row>
                 <v-divider></v-divider>
                 <v-row>
-                    <v-col md=12>
+                    <v-col md="12">
                         <v-banner rounded="pill">
                             <input
                                 type="text"
                                 @input="searchPokemon()"
-                                v-model="searchTerm"/>
+                                v-model="searchTerm"
+                            />
                             <v-icon>mdi-magnify</v-icon>
                         </v-banner>
                     </v-col>
@@ -90,7 +91,13 @@
                     </v-col>
                 </v-row>
             </v-container>
+
         </v-navigation-drawer>
+        <v-bottom-navigation
+        background-color="deep-orange-darken-1"
+         app="true"
+        ><v-row >
+            <v-col md="12"  class="footer">Created by @minikdev</v-col></v-row></v-bottom-navigation>
     </div>
 </template>
 
@@ -182,5 +189,13 @@ export default {
 }
 .router-link {
     text-decoration: none;
+}
+.footer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.v-banner-content{
+    -webkit-padding-end: 25px !important;
 }
 </style>

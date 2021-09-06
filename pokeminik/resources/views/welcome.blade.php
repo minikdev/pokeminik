@@ -11,7 +11,7 @@
         <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
         <!-- <link rel="icon" type="image/png" sizes="32x32" href="../../public/favicon-32x32.png"> -->
         <!-- <link rel="icon" href="{{ URL::asset('favicon.ico') }}" type="image/x-icon"/> -->
-        <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
+        <link rel="shortcut icon" href="../../../../public/favicon.ico">
         <!-- <link rel="icon" type="image/png" sizes="16x16" href="../../public/favicon-16x16.png"> -->
         <!-- <link rel="apple-touch-icon" sizes="180x180" href="../../public/apple-touch-icon.png"> -->
     </head>
