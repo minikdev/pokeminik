@@ -141,7 +141,7 @@ export default {
             router.push({ name: "PokemonDetail", params: { id: pokemonId } });
         };
         const moveTrainerDetail = ()=>{
-            router.push({ name: "TrainerDetail", params: { id: trainerId.value} });
+            router.push({ name: "Profile"});
         }
         const moveToLogin = () => {
             router.push({ name: "Login" });
